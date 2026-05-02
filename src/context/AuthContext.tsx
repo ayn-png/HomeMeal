@@ -5,9 +5,9 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase/config';
-import { UserProfile } from '../types';
+import { UserProfile, UserRole } from '../types';
 
 interface AuthContextType {
   user: User | null;
@@ -34,7 +34,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           if (docSnap.exists()) {
             setProfile(docSnap.data() as UserProfile);
           } else {
-            setProfile(null);
+            const defaultProfile: UserProfile = {
+              uid: user.uid,
+              name: user.displayName || user.phoneNumber || user.email || 'User',
+              role: UserRole.STUDENT,
+              createdAt: Date.now(),
+              ...(user.email ? { email: user.email } : {}),
+              ...(user.phoneNumber ? { phone: user.phoneNumber } : {}),
+            };
+            await setDoc(docRef, defaultProfile);
+            setProfile(defaultProfile);
           }
         } catch (error) {
           console.error("Error fetching profile:", error);

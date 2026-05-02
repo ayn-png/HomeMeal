@@ -28,6 +28,14 @@ service cloud.firestore {
       return resource.data;
     }
 
+    function authProvider() {
+      return request.auth.token.firebase.sign_in_provider;
+    }
+
+    function isPhoneSignIn() {
+      return authProvider() == 'phone';
+    }
+
     function getRole(uid) {
       return get(/databases/$(database)/documents/users/$(uid)).data.role;
     }
@@ -36,16 +44,17 @@ service cloud.firestore {
     function isValidUser(data) {
       return data.uid == request.auth.uid 
         && data.name is string && data.name.size() > 0 && data.name.size() <= 100
-        && data.email is string && data.email.size() > 0 && data.email.size() <= 100
         && data.role in ['student', 'provider']
+        && (isPhoneSignIn() || (data.email is string && data.email.size() > 0 && data.email.size() <= 100))
         && (data.role == 'student' || (
-          data.phone is string && 
+          data.phone is string && data.phone.size() > 0 && data.phone.size() <= 20 &&
           data.address is string && 
           data.latitude is number && 
           data.longitude is number
         ))
         && data.createdAt is number
-        && data.keys().hasAll(['uid', 'name', 'email', 'role', 'createdAt']);
+        && data.keys().hasAll(['uid', 'name', 'role', 'createdAt'])
+        && data.keys().hasOnly(['uid', 'name', 'email', 'phone', 'role', 'address', 'latitude', 'longitude', 'rating', 'reviewCount', 'createdAt']);
     }
 
     function isValidMeal(data) {

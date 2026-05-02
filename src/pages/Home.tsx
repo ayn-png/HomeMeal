@@ -132,7 +132,7 @@ const Home: React.FC = () => {
           >
             <div className="flex items-center gap-2 mb-6">
               <h2 className="text-3xl font-black text-gray-900 tracking-tight">Nearby Home Kitchens</h2>
-              <div className="h-0.5 flex-grow bg-gray-100"></div>
+              <div className="h-0.5 grow bg-gray-100"></div>
             </div>
             <NearbyProviders 
               userLocation={userLocation} 
@@ -158,12 +158,12 @@ const Home: React.FC = () => {
               </button>
             )}
           </div>
-          <div className="h-0.5 flex-grow bg-gray-100 mx-8 hidden lg:block"></div>
+          <div className="h-0.5 grow bg-gray-100 mx-8 hidden lg:block"></div>
         </div>
 
         <div className="mb-10 flex flex-col lg:flex-row gap-4 items-center justify-between">
           <div className="flex flex-col md:flex-row gap-4 w-full">
-            <div className="relative flex-grow">
+            <div className="relative grow">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
                 <Search size={20} />
               </div>

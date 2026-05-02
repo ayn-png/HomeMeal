@@ -20,7 +20,7 @@ export enum OperationType {
 export interface UserProfile {
   uid: string;
   name: string;
-  email: string;
+  email?: string;
   role: UserRole;
   phone?: string;
   address?: string;
