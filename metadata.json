@@ -1,0 +1,6 @@
+{
+  "name": "HomeMeal",
+  "description": "A home-cooked food marketplace connecting chefs with students.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": []
+}
